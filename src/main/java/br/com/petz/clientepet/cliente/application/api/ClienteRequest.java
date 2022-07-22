@@ -16,18 +16,19 @@ import lombok.Value;
 public class ClienteRequest {
 
 	@NotBlank
-	private String nomeCompleto ;
+	private String nomeCompleto;
 	@NotBlank
 	@Email
-	private String email ;
+	private String email;
 	@NotBlank
-	private String celular ;
-	private String telefone ;
-	private Sexo sexo ;
+	private String celular;
+	private String telefone;
+	private Sexo sexo;
 	@NotNull
-	private LocalDate dataNacimento ;
+	private LocalDate dataNascimento;
 	@CPF
-	private String cpf ;
+	private String cpf;
 	@NotNull
 	private Boolean aceitaTermos;
+
 }
