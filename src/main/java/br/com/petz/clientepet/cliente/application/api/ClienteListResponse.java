@@ -13,7 +13,7 @@ public class ClienteListResponse {
 	private String nomeCompleto ;
 	private String cpf ;
 	private String email ;
-	private String celular ;
+	private String celular;
 	public static List<ClienteListResponse> converte(List<Cliente> clientes) {
 		
 		return clientes.stream()
