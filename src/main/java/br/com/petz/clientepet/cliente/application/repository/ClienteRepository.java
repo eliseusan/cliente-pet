@@ -11,6 +11,6 @@ public interface ClienteRepository {
 
 	List<Cliente> buscaTodosClientes();
 
-	Cliente buscaClienteAtravezId(UUID idCliente);
+	Cliente buscaClienteAtravesId(UUID idCliente);
 
 }
