@@ -3,6 +3,8 @@ package br.com.petz.clientepet.cliente.application.api;
 import java.util.List;
 import java.util.UUID;
 
+import javax.validation.Valid;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.petz.clientepet.cliente.application.service.ClienteService;
@@ -49,6 +51,15 @@ public class ClienteController implements ClienteAPI {
 		log.info("[idCliente] {}", idCliente);
 		clienteService.deletaClienteAtravesId(idCliente);
 		log.info("[finaliza] ClienteController - deletaClienteAtravesId");
+		
+	}
+
+	@Override
+	public void patchalteraCliente(UUID idCliente ,@Valid ClienteAlteracaoRequest clienteAlteracaoRequest) {
+		log.info("[inicia] ClienteController - patchalteraCliente");
+		log.info("[idCliente] {}", idCliente);
+		clienteService.patchAlteraCliente(idCliente,clienteAlteracaoRequest);
+		log.info("[finaliza] ClienteController - patchalteraCliente");
 		
 	}
 
