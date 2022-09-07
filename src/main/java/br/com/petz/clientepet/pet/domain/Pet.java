@@ -68,9 +68,4 @@ public class Pet {
 		this.peso = petRequest.getPeso();
 		this.dataHoraDoCadastro = LocalDateTime.now();
 	}
-
-	
-	
-	
-	
 }
