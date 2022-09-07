@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import br.com.petz.clientepet.pet.application.PetRequest;
+import br.com.petz.clientepet.pet.application.api.PetRequest;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

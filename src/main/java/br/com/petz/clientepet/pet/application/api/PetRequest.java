@@ -1,4 +1,4 @@
-package br.com.petz.clientepet.pet.application;
+package br.com.petz.clientepet.pet.application.api;
 
 import java.time.LocalDate;
 

@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import br.com.petz.clientepet.pet.application.PetRequest;
-import br.com.petz.clientepet.pet.application.PetResponse;
+import br.com.petz.clientepet.pet.application.api.PetRequest;
+import br.com.petz.clientepet.pet.application.api.PetResponse;
 
 public interface PetService {
 

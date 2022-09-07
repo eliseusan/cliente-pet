@@ -7,9 +7,9 @@ import javax.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import br.com.petz.clientepet.cliente.application.service.ClienteService;
-import br.com.petz.clientepet.pet.application.PetRepository;
-import br.com.petz.clientepet.pet.application.PetRequest;
-import br.com.petz.clientepet.pet.application.PetResponse;
+import br.com.petz.clientepet.pet.application.api.PetRequest;
+import br.com.petz.clientepet.pet.application.api.PetResponse;
+import br.com.petz.clientepet.pet.application.repository.PetRepository;
 import br.com.petz.clientepet.pet.domain.Pet;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
