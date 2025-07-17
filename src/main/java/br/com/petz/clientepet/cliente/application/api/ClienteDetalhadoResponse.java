@@ -1,12 +1,11 @@
 package br.com.petz.clientepet.cliente.application.api;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import br.com.petz.clientepet.cliente.domain.Cliente;
 import br.com.petz.clientepet.cliente.domain.Sexo;
 import lombok.Value;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Value
 public class ClienteDetalhadoResponse {
