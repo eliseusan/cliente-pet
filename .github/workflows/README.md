@@ -14,6 +14,7 @@ Para que o workflow funcione, você precisa configurar os seguintes secrets no s
 #### `DOCKER_USERNAME`
 - Seu nome de usuário do Docker Hub
 - Exemplo: `meuusuario`
+- **Importante:** Este será usado para criar a imagem: `docker.io/meuusuario/cliente-pet`
 
 #### `DOCKER_PASSWORD`
 - Sua senha do Docker Hub ou um Access Token
@@ -38,7 +39,7 @@ Para que o workflow funcione, você precisa configurar os seguintes secrets no s
 
 ### Tags geradas automaticamente:
 - `pr-123` (número do Pull Request)
-- `develop-sha123` (branch + commit hash)
+- `pr-d7517b1` (pr- + commit hash)
 
 ## Exemplo de uso
 
