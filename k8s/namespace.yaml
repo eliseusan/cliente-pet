@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cliente-pet
+  labels:
+    name: cliente-pet
+    app: cliente-pet-api 
