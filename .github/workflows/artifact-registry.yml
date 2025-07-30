@@ -1,0 +1,66 @@
+name: Build and Push to Artifact Registry
+
+on:
+  pull_request:
+    branches: [ develop ]
+  push:
+    branches: [ develop, main ]
+
+env:
+  REGISTRY: us-central1-docker.pkg.dev
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REPOSITORY: images
+  IMAGE_NAME: cliente-pet
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Google Auth
+      id: auth
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+        service_account: ${{ secrets.GCP_SA_EMAIL }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Configure Docker for Artifact Registry
+      run: |
+        gcloud auth configure-docker ${{ env.REGISTRY }} --quiet
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}
+        tags: |
+          type=ref,event=pr
+          type=sha,prefix=pr-
+          type=ref,event=branch
+          type=ref,event=tag
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Show image tags
+      run: |
+        echo "Built image tags:"
+        echo "${{ steps.meta.outputs.tags }}" 
