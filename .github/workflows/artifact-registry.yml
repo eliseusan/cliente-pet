@@ -9,7 +9,7 @@ on:
 
 env:
   REGION: us-central1
-  REPOSITORY_ID: api-cliente-pet-repo
+  REPOSITORY_ID: clientepet-repository
   IMAGE_NAME: api-cliente-pet
 
 jobs:
