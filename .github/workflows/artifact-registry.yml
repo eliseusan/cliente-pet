@@ -1,0 +1,75 @@
+name: Build and Push to Artifact Registry
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+     branches: [ main ]
+  workflow_dispatch:
+
+env:
+  REGION: us-central1
+  REPOSITORY_ID: clientepet-repository
+  IMAGE_NAME: api-cliente-pet
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          echo "$(gcloud auth application-default print-access-token)" | docker login -u oauth2accesstoken --password-stdin ${{ env.REGION }}-docker.pkg.dev
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Extract metadata and set image tags
+        id: meta
+        env:
+          REGISTRY_URI: ${{ env.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.REPOSITORY_ID }}/${{ env.IMAGE_NAME }}
+        run: |
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "tag1=${REGISTRY_URI}:pr-${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
+            echo "tag2=${REGISTRY_URI}:pr-${SHORT_SHA}" >> $GITHUB_OUTPUT
+          else
+            echo "tag1=${REGISTRY_URI}:${{ github.ref_name }}-${SHORT_SHA}" >> $GITHUB_OUTPUT
+            echo "tag2=${REGISTRY_URI}:${{ github.ref_name }}-latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ steps.meta.outputs.tag1 }}
+            ${{ steps.meta.outputs.tag2 }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Show image URI
+        run: |
+          echo "✅ Imagem enviada para o Artifact Registry com sucesso!"
+          echo "URI: ${{ env.REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.REPOSITORY_ID }}/${{ env.IMAGE_NAME }}"
+          echo "Tags: ${{ steps.meta.outputs.tag1 }}, ${{ steps.meta.outputs.tag2 }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
