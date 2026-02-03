@@ -16,8 +16,8 @@ COPY src ./src
 # Compila a aplicação
 RUN mvn clean package -DskipTests
 
-# Stage de produção - imagem final mais leve
-FROM openjdk:11-jre-slim
+# Stage de produção - imagem final mais leve (Eclipse Temurin substitui openjdk descontinuado)
+FROM eclipse-temurin:11-jre-jammy
 
 # Define o diretório de trabalho
 WORKDIR /app
